@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Reloj de Tlaxiaco AR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/jeromeetienne/ar.js/2.0.1/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+    </style>
+  </head>
+
+  <body>
+    <a-scene
+      embedded
+      vr-mode-ui="enabled: false"
+      arjs="sourceType: webcam; trackingMethod: best; gpsMinAccuracy: 100;">
+
+      <!-- Cámara con GPS -->
+      <a-camera gps-camera rotation-reader></a-camera>
+
+      <!-- Modelo 3D del Reloj de Tlaxiaco -->
+      <a-entity 
+        gps-entity-place="latitude: 17.2622; longitude: -97.6798;"
+        gltf-model="/model/reloj.glb"
+        scale="2 2 2"
+        rotation="0 180 0"
+        animation-mixer>
+      </a-entity>
+
+      <!-- Botón de información -->
+      <a-entity position="0 1.5 -2">
+        <a-plane 
+          color="#0077CC" 
+          width="1.5" 
+          height="0.5" 
+          material="opacity: 0.8"
+          onclick="mostrarInformacion()">
+          <a-text 
+            value="Informacion del Reloj de Tlaxiaco" 
+            align="center" 
+            color="white" 
+            position="0 0 0.01" 
+            width="1.4">
+          </a-text>
+        </a-plane>
+      </a-entity>
+
+    </a-scene>
+
+    <script>
+      function mostrarInformacion() {
+        alert("RELOJ DE TLAXIACO\n\nConstruido en 1947.\nPrimera obra de cemento en Tlaxiaco.\nTiene cuatro caras y se le da cuerda cada 72 horas.");
+      }
+    </script>
+  </body>
+</html>
