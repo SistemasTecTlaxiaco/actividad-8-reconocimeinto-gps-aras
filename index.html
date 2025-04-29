@@ -1,57 +1,126 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Reloj de Tlaxiaco AR</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://rawgit.com/jeromeetienne/ar.js/2.0.1/aframe/build/aframe-ar.min.js"></script>
-    <style>
-      body { margin: 0; overflow: hidden; }
-    </style>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <title>Reloj de Tlaxiaco AR</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://rawgit.com/jeromeetienne/ar.js/2.0.1/aframe/build/aframe-ar.min.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
 
-  <body>
-    <a-scene
-      embedded
-      vr-mode-ui="enabled: false"
-      arjs="sourceType: webcam; trackingMethod: best; gpsMinAccuracy: 100;">
+    /* Botón flotante */
+    #info-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #0077CC;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 999;
+      opacity: 0.9;
+      cursor: pointer;
+    }
 
-      <!-- Cámara con GPS -->
-      <a-camera gps-camera rotation-reader></a-camera>
+    #info-button:hover {
+      background-color: #005fa3;
+    }
 
-      <!-- Modelo 3D del Reloj de Tlaxiaco -->
-      <a-entity 
-        gps-entity-place="latitude: 17.269012; longitude: -97.680147;"
-        gltf-model="model/reloj.glb"
-        scale="5 5 5"
-        rotation="0 180 0"
-        animation-mixer>
-      </a-entity>
+    /* Panel informativo */
+    #info-panel {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 10px;
+      width: 90%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
 
-      <!-- Botón de información -->
-      <a-entity position="0 1.5 -2">
-        <a-plane 
-          color="#0077CC" 
-          width="1.5" 
-          height="0.5" 
-          material="opacity: 0.8"
-          onclick="mostrarInformacion()">
-          <a-text 
-            value="Informacion del Reloj de Tlaxiaco" 
-            align="center" 
-            color="white" 
-            position="0 0 0.01" 
-            width="1.4">
-          </a-text>
-        </a-plane>
-      </a-entity>
+    #info-panel h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #333;
+    }
 
-    </a-scene>
+    #info-panel p {
+      font-size: 14px;
+      color: #555;
+    }
 
-    <script>
-      function mostrarInformacion() {
-        alert("RELOJ DE TLAXIACO\n\nConstruido en 1947.\nPrimera obra de cemento en Tlaxiaco.\nTiene cuatro caras y se le da cuerda cada 72 horas.");
-      }
-    </script>
-  </body>
+    #info-panel img {
+      width: 100%;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    #close-panel {
+      margin-top: 10px;
+      background-color: #cc0000;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #close-panel:hover {
+      background-color: #990000;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Botón de información -->
+  <button id="info-button" onclick="mostrarInformacion()">Información del Reloj</button>
+
+  <!-- Panel informativo -->
+  <div id="info-panel">
+    <h2>Reloj de Tlaxiaco, Oaxaca</h2>
+    <p>
+      El Reloj Monumental de Tlaxiaco fue construido en 1947 y es considerado el primer edificio de cemento de la ciudad.
+      Con cuatro caras visibles, este reloj se ha convertido en un símbolo icónico. Su mecanismo requiere cuerda cada 72 horas
+      para seguir funcionando con precisión.
+    </p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Reloj_Tlaxiaco.jpg" alt="Reloj de Tlaxiaco">
+    <button id="close-panel" onclick="cerrarInformacion()">Cerrar</button>
+  </div>
+
+  <!-- Escena A-Frame AR -->
+  <a-scene
+    embedded
+    vr-mode-ui="enabled: false"
+    arjs="sourceType: webcam; trackingMethod: best; gpsMinAccuracy: 100;">
+    
+    <!-- Cámara y luces -->
+    <a-camera gps-camera rotation-reader></a-camera>
+    <a-entity light="type: ambient; intensity: 1.2"></a-entity>
+    <a-entity light="type: directional; intensity: 1.5" position="0 10 0"></a-entity>
+
+    <!-- Modelo del reloj -->
+    <a-entity 
+      gps-entity-place="latitude: 17.269012; longitude: -97.680147;"
+      gltf-model="model/reloj.glb"
+      scale="5 5 5"
+      rotation="0 180 0"
+      animation-mixer>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    function mostrarInformacion() {
+      document.getElementById("info-panel").style.display = "block";
+    }
+
+    function cerrarInformacion() {
+      document.getElementById("info-panel").style.display = "none";
+    }
+  </script>
+</body>
 </html>
